@@ -27,13 +27,6 @@ class PagerDutyGateway extends AbstractGateway implements GatewayInterface
     protected $endpoint = 'https://events.pagerduty.com/generic/{version}';
 
     /**
-     * Gateway display name.
-     *
-     * @var string
-     */
-    protected $displayName = 'pagerduty';
-
-    /**
      * PagerDuty api version.
      *
      * @var string
