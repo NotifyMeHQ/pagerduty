@@ -12,13 +12,16 @@
 
 namespace NotifyMeHQ\PagerDuty;
 
-use NotifyMeHQ\NotifyMe\AbstractGateway;
+use GuzzleHttp\Client;
 use NotifyMeHQ\NotifyMe\Arr;
 use NotifyMeHQ\NotifyMe\GatewayInterface;
+use NotifyMeHQ\NotifyMe\HttpGatewayTrait;
 use NotifyMeHQ\NotifyMe\Response;
 
-class PagerDutyGateway extends AbstractGateway implements GatewayInterface
+class PagerDutyGateway implements GatewayInterface
 {
+    use HttpGatewayTrait;
+
     /**
      * Gateway api endpoint.
      *
@@ -34,18 +37,30 @@ class PagerDutyGateway extends AbstractGateway implements GatewayInterface
     protected $version = '2010-04-15';
 
     /**
+     * The http client.
+     *
+     * @var \GuzzleHttp\Client
+     */
+    protected $client;
+
+    /**
+     * Configuration options.
+     *
+     * @var string[]
+     */
+    protected $config;
+
+    /**
      * Create a new pagerduty gateway instance.
      *
-     * @param string[] $config
+     * @param \GuzzleHttp\Client $client
+     * @param string[]           $config
      *
      * @return void
      */
-    public function __construct(array $config)
+    public function __construct(Client $client, array $config)
     {
-        $this->requires($config, ['token']);
-
-        $config['from'] = Arr::get($config, 'from', '');
-
+        $this->client = $client;
         $this->config = $config;
     }
 
@@ -100,7 +115,7 @@ class PagerDutyGateway extends AbstractGateway implements GatewayInterface
     {
         $success = false;
 
-        $rawResponse = $this->getHttpClient()->{$method}($url, [
+        $rawResponse = $this->client->{$method}($url, [
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',

@@ -12,6 +12,8 @@
 
 namespace NotifyMeHQ\PagerDuty;
 
+use GuzzleHttp\Client;
+use NotifyMeHQ\NotifyMe\Arr;
 use NotifyMeHQ\NotifyMe\FactoryInterface;
 
 class PagerDutyFactory implements FactoryInterface
@@ -25,6 +27,10 @@ class PagerDutyFactory implements FactoryInterface
      */
     public function make(array $config)
     {
-        return new PagerDutyGateway($config);
+        Arr::requires($config, ['token']);
+
+        $client = new Client();
+
+        return new PagerDutyGateway($client, $config);
     }
 }
