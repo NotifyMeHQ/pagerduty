@@ -1,0 +1,40 @@
+{
+    "name": "notifymehq/pagerduty",
+    "description": "Provides a pagerduty gateway for notifyme",
+    "license": "MIT",
+    "keywords": ["notifymehq", "notifyme", "pagerduty"],
+    "authors": [
+        {
+            "name": "Joseph Cohen",
+            "email": "joseph.cohen@dinkbit.com"
+        },
+        {
+            "name": "Graham Campbell",
+            "email": "graham@mineuk.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "notifymehq/notifyme": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NotifyMeHQ\\PagerDuty\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NotifyMeHQ\\PagerDuty\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
