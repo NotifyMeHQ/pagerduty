@@ -1,6 +1,6 @@
-# NotifyMe PagerDuty
+# NotifyMe Pagerduty
 
-A PagerDuty gateway for NotifyMe.
+A Pagerduty gateway for NotifyMe.
 
 ## Todo
 

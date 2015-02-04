@@ -30,7 +30,7 @@ class PagerdutyGateway implements GatewayInterface
     protected $endpoint = 'https://events.pagerduty.com/generic/{version}';
 
     /**
-     * PagerDuty api version.
+     * Pagerduty api version.
      *
      * @var string
      */
