@@ -23,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "NotifyMeHQ\\PagerDuty\\": "src/"
+            "NotifyMeHQ\\Pagerduty\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "NotifyMeHQ\\PagerDuty\\Tests\\": "tests/"
+            "NotifyMeHQ\\Pagerduty\\Tests\\": "tests/"
         }
     },
     "extra": {

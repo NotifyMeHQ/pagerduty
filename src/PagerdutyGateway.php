@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace NotifyMeHQ\PagerDuty;
+namespace NotifyMeHQ\Pagerduty;
 
 use GuzzleHttp\Client;
 use NotifyMeHQ\NotifyMe\Arr;
@@ -18,7 +18,7 @@ use NotifyMeHQ\NotifyMe\GatewayInterface;
 use NotifyMeHQ\NotifyMe\HttpGatewayTrait;
 use NotifyMeHQ\NotifyMe\Response;
 
-class PagerDutyGateway implements GatewayInterface
+class PagerdutyGateway implements GatewayInterface
 {
     use HttpGatewayTrait;
 

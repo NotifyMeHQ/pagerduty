@@ -10,20 +10,20 @@
  * file that was distributed with this source code.
  */
 
-namespace NotifyMeHQ\PagerDuty;
+namespace NotifyMeHQ\Pagerduty;
 
 use GuzzleHttp\Client;
 use NotifyMeHQ\NotifyMe\Arr;
 use NotifyMeHQ\NotifyMe\FactoryInterface;
 
-class PagerDutyFactory implements FactoryInterface
+class PagerdutyFactory implements FactoryInterface
 {
     /**
      * Create a new pagerduty gateway instance.
      *
      * @param string[] $config
      *
-     * @return \NotifyMeHQ\PagerDuty\PagerDutyGateway
+     * @return \NotifyMeHQ\Pagerduty\PagerdutyGateway
      */
     public function make(array $config)
     {
@@ -31,6 +31,6 @@ class PagerDutyFactory implements FactoryInterface
 
         $client = new Client();
 
-        return new PagerDutyGateway($client, $config);
+        return new PagerdutyGateway($client, $config);
     }
 }

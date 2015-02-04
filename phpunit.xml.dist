@@ -14,7 +14,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="NotifyMe PagerDuty Test Suite">
+        <testsuite name="NotifyMe Pagerduty Test Suite">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
