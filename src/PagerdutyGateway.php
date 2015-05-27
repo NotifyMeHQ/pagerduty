@@ -78,7 +78,7 @@ class PagerdutyGateway implements GatewayInterface
 
         $params = $this->addMessage($message, $params, $options);
 
-        return $this->commit('post', $this->buildUrlFromString("create_event.json"), $params);
+        return $this->commit('post', $this->buildUrlFromString('create_event.json'), $params);
     }
 
     /**
