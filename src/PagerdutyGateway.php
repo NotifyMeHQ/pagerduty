@@ -75,7 +75,7 @@ class PagerdutyGateway implements GatewayInterface
     public function notify($to, $message, array $options = [])
     {
         $options['to'] = $to;
-
+        $params = [];
         $params = $this->addMessage($message, $params, $options);
 
         return $this->commit('post', $this->buildUrlFromString('create_event.json'), $params);
@@ -153,7 +153,7 @@ class PagerdutyGateway implements GatewayInterface
     {
         return (new Response())->setRaw($response)->map([
             'success' => $success,
-            'message' => $success ? 'Message sent' : $response['error']['message'],
+            'message' => $success ? 'Message sent' : $response['error'],
         ]);
     }
 
