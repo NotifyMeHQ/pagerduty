@@ -12,8 +12,8 @@
 namespace NotifyMeHQ\Pagerduty;
 
 use GuzzleHttp\Client;
-use NotifyMeHQ\NotifyMe\Arr;
 use NotifyMeHQ\Contracts\FactoryInterface;
+use NotifyMeHQ\NotifyMe\Arr;
 
 class PagerdutyFactory implements FactoryInterface
 {
