@@ -22,32 +22,18 @@ class PagerdutyGateway implements GatewayInterface
     use HttpGatewayTrait;
 
     /**
-     * Gateway api endpoint.
+     * The api endpoint.
      *
      * @var string
      */
-    protected $endpoint = 'https://events.pagerduty.com/generic/{version}';
+    protected $endpoint = 'https://events.pagerduty.com/generic';
 
     /**
-     * Pagerduty api version.
+     * The api version.
      *
      * @var string
      */
     protected $version = '2010-04-15';
-
-    /**
-     * The http client.
-     *
-     * @var \GuzzleHttp\Client
-     */
-    protected $client;
-
-    /**
-     * Configuration options.
-     *
-     * @var string[]
-     */
-    protected $config;
 
     /**
      * Create a new pagerduty gateway instance.
@@ -66,83 +52,68 @@ class PagerdutyGateway implements GatewayInterface
     /**
      * Send a notification.
      *
-     * @param string   $to
-     * @param string   $message
-     * @param string[] $options
+     * @param string $to
+     * @param string $message
      *
      * @return \NotifyMeHQ\Contracts\ResponseInterface
      */
-    public function notify($to, $message, array $options = [])
+    public function notify($to, $message)
     {
-        $options['to'] = $to;
+        $params = [
+            'to'          => $to,
+            'service_key' => $this->config['token'],
+            'event_type'  => Arr::get($this->config, 'event_type', 'trigger'),
+            'client'      => Arr::get($options, 'client', null)
+            'client_url'  => Arr::get($options, 'client_url', null)
+            'details'     => Arr::get($options, 'details', null)
+            'description' => $message
+        ];
 
-        $params = $this->addMessage($message, $params, $options);
-
-        return $this->commit('post', $this->buildUrlFromString('create_event.json'), $params);
+        return $this->send($this->buildUrlFromString('create_event.json'), $params);
     }
 
     /**
-     * Add a message to the request.
+     * Send the notification over the wire.
      *
-     * @param string   $message
-     * @param string[] $params
-     * @param string[] $options
-     *
-     * @return array
-     */
-    protected function addMessage($message, array $params, array $options)
-    {
-        $params['service_key'] = Arr::get($options, 'token', $this->config['token']);
-        $params['incident_key'] = Arr::get($options, 'to', 'NotifyMe');
-        $params['event_type'] = Arr::get($options, 'event_type', 'trigger');
-        $params['client'] = Arr::get($options, 'client', null);
-        $params['client_url'] = Arr::get($options, 'client_url', null);
-        $params['details'] = Arr::get($options, 'details', null);
-        $params['description'] = $message;
-
-        return $params;
-    }
-
-    /**
-     * Commit a HTTP request.
-     *
-     * @param string   $method
      * @param string   $url
      * @param string[] $params
-     * @param string[] $options
      *
-     * @return mixed
+     * @return \NotifyMeHQ\Contracts\ResponseInterface
      */
-    protected function commit($method = 'post', $url, array $params = [], array $options = [])
+    protected function send($url, array $params)
     {
         $success = false;
 
-        $rawResponse = $this->client->{$method}($url, [
+        $rawResponse = $this->client->post($url, [
             'exceptions'      => false,
             'timeout'         => '80',
             'connect_timeout' => '30',
             'headers'         => [
+                'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
             ],
             'json' => $params,
         ]);
 
-        if ($rawResponse->getStatusCode() == 200) {
-            $response = [];
-            $success = true;
-        } elseif ($rawResponse->getStatusCode() == 404) {
-            $response['error'] = 'Inválid service.';
-        } elseif ($rawResponse->getStatusCode() == 400) {
-            $response['error'] = 'Incorrect request values.';
-        } else {
-            $response = $this->responseError($rawResponse);
+        switch ($rawResponse->getStatusCode()) {
+            case 200:
+                $success = true;
+                break;
+            case 400:
+                $response = ['error' => 'Incorrect request values.'];
+                break;
+            case 404:
+                $response = ['error' => 'Invalid service.'];
+                break;
+            default:
+                $response = $this->responseError($rawResponse);
         }
 
         return $this->mapResponse($success, $response);
     }
 
     /**
-     * Map HTTP response to response object.
+     * Map the raw response to our response object.
      *
      * @param bool  $success
      * @param array $response
@@ -160,7 +131,7 @@ class PagerdutyGateway implements GatewayInterface
     /**
      * Get the default json response.
      *
-     * @param string $rawResponse
+     * @param \GuzzleHttp\Message\ResponseInterface $rawResponse
      *
      * @return array
      */
@@ -183,6 +154,6 @@ class PagerdutyGateway implements GatewayInterface
      */
     protected function getRequestUrl()
     {
-        return str_replace('{version}', $this->version, $this->endpoint);
+        return $this->endpoint.'/'.$this->version;
     }
 }
