@@ -63,9 +63,9 @@ class PagerdutyGateway implements GatewayInterface
             'to'          => $to,
             'service_key' => $this->config['token'],
             'event_type'  => Arr::get($this->config, 'event_type', 'trigger'),
-            'client'      => Arr::get($options, 'client', null)
-            'client_url'  => Arr::get($options, 'client_url', null)
-            'details'     => Arr::get($options, 'details', null)
+            'client'      => Arr::get($this->config, 'client', null)
+            'client_url'  => Arr::get($this->config, 'client_url', null)
+            'details'     => Arr::get($this->config, 'details', null)
             'description' => $message
         ];
 
